@@ -1,0 +1,56 @@
+[
+  {
+    "history_id": 1,
+    "student_id": 1001,
+    "course_id": 199468,
+    "term_id": 1,
+    "grade": "A",
+    "status": "completed",
+    "credits_earned": 1.00
+  },
+  {
+    "history_id": 2,
+    "student_id": 1001,
+    "course_id": 8392,
+    "term_id": 1,
+    "grade": "B",
+    "status": "completed",
+    "credits_earned": 4.00
+  },
+  {
+    "history_id": 3,
+    "student_id": 1001,
+    "course_id": 8393,
+    "term_id": 3,
+    "grade": "B",
+    "status": "completed",
+    "credits_earned": 3.00
+  },
+  {
+    "history_id": 4,
+    "student_id": 1001,
+    "course_id": 8624,
+    "term_id": 3,
+    "grade": "C",
+    "status": "completed",
+    "credits_earned": 3.00
+  },
+  {
+    "history_id": 5,
+    "student_id": 1001,
+    "course_id": 12452,
+    "term_id": 3,
+    "grade": "B",
+    "status": "completed",
+    "credits_earned": 3.00
+  },
+  {
+    "history_id": 6,
+    "student_id": 1001,
+    "course_id": 9874,
+    "term_id": 3,
+    "grade": "B",
+    "status": "completed",
+    "credits_earned": 3.00
+  }
+]
