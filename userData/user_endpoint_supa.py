@@ -161,7 +161,7 @@ def get_user(user_id: str):
 
                 if profile.get("student_type") is None:
 
-                    match_profile["student_type"] = "regular"
+                    profile["student_type"] = "regular"
 
                 valid_profile = student_profile(**profile)
 
