@@ -1,3 +1,4 @@
+#allows for access to other libraries and files
 from fastapi import HTTPException, APIRouter
 from database.init_db import supabase
 from database.types import User, student_profile
@@ -7,11 +8,12 @@ router = APIRouter()
 
 
 
-#should only need to be used by admin to see all users
+#should only need to be used by admin to see all users, printas out all users and there profiles
 @router.get("/users")
 def get_users():
 
 
+    #tries to get all users at once with 10 in each batch at a time
     try:
     
         all_users =[]
@@ -20,6 +22,7 @@ def get_users():
         start = 0
 
 
+        #while true get the data of profile and courses
         while True:
 
             response = (
@@ -42,6 +45,7 @@ def get_users():
                 .execute()
             )
 
+            #places data in batches and into list
             batch = response.data
             all_users.extend(batch)
 
@@ -49,6 +53,7 @@ def get_users():
             batch2 = response2.data
             all_profiles.extend(batch2)
 
+            #if batch is less then size break loop
             if len(batch) < size:
 
                 break
@@ -57,6 +62,7 @@ def get_users():
             start += size
 
 
+        #valid user that if spacific data is empty then replace with default values
         valid_users = []
 
         for user in all_users:
@@ -67,6 +73,7 @@ def get_users():
 
                 user["role"] = "student"
 
+            #checks for a matching profile for user
             match = None
             for profile in all_profiles:
 
@@ -79,6 +86,7 @@ def get_users():
 
 
 
+            #if profiles match then  set default type if not already then place as valid profile
             try:
 
                 valid_user = User(**user)
@@ -95,6 +103,7 @@ def get_users():
 
                     valid_profile = None
 
+                #put both profile and user in a list
                 valid_users.append({"user": valid_user, "student_profile": valid_profile})
 
             except Exception as e:
@@ -102,7 +111,7 @@ def get_users():
                 print(f"Course {user.get("user_id")} still has invalid data: {e}")
 
 
-
+        #return list
         return valid_users
 
     except Exception as e:
@@ -111,10 +120,11 @@ def get_users():
 
 
 
-
+#gets an individual user by there user id
 @router.get("/users/{user_id}")
 def get_user(user_id: str):
 
+    #gets the user information from user table
     try:
 
         response = (
@@ -125,16 +135,19 @@ def get_user(user_id: str):
             .execute()
         )
 
+        #if no data desplay ther is none
         if not response.data:
             raise HTTPException(status_code  = 404, detail =f"user with user ID {user_id} does not exist")
-    
+
+        #if data then make copy as user
         user = response.data[0].copy()
 
+        #default peramitors
         if user.get("role") is None:
 
             user["role"] = "student"
 
-
+        #look for student profile
         response2 = (
 
             supabase
@@ -144,6 +157,7 @@ def get_user(user_id: str):
             .execute()
         )
 
+        #if there is a profile then copy it as profile, if not set it to none
         if response2.data:
 
             profile = response2.data[0].copy()
@@ -153,6 +167,7 @@ def get_user(user_id: str):
             profile = None
 
 
+        #makes a valid user , then makes a valid profile 
         try:
 
             valid_user = User(**user)
@@ -169,6 +184,7 @@ def get_user(user_id: str):
 
                 valid_profile = None
 
+            #combines profile and user and returns them 
             return {"user": valid_user, "student_profile": valid_profile}
 
         except Exception as e:
