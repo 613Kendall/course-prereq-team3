@@ -38,7 +38,7 @@ class Department(BaseModel):
     department_name: Optional[str]
 
 class User(BaseModel):
-    user_id: int
+    user_id: str
     first_name: str
     last_name: str
     email: str
@@ -47,13 +47,13 @@ class User(BaseModel):
 
 class student_profile(BaseModel):
     student_id: int
-    user_id: int
-    student_numbers: str
-    student_type: str = "student"
+    user_id: str
+    student_number: Optional[str] = None
+    student_type: Optional[str] = "regular"
     degree_program_id: Optional[int] = None
     admission_year: Optional[int] = None
     catalog_year: Optional[int] = None
-    expected_graduation: Optional[int] = None
+    expected_graduation: Optional[str] = None
     created_at: Optional[str] = None
 
 class course_history(BaseModel):
@@ -78,6 +78,7 @@ class external_credits(BaseModel):
     equivalent_course_id: Optional[int] = None
     credits_awarded: float = 0.0
     approval_status: str = "pending"
+    policy_or_test_note: Optional[str] = None
     reviewed_by: Optional[str] = None
     reviewed_at: Optional[str] = None
     created_at: Optional[str] = None

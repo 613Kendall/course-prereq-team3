@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from database.init_db import supabase
 from catalog.Classes import router as course_route
 from graph.router import router as graph_route
-from userData.user_endpoint import router as users_route
-from userData.user_courses_endpoint import router as usersHistory_route
+from userData.user_endpoint_supa import router as users_route
+from userData.user_courses_endpoint_supa import router as usersHistory_route
 
 app = FastAPI()
 
