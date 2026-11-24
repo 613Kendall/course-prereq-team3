@@ -1,3 +1,4 @@
+#imports t access 
 from fastapi import HTTPException, APIRouter
 from database.init_db import supabase
 from database.types import course_history, external_credits
@@ -8,11 +9,11 @@ from database.types import course_history, external_credits
 router = APIRouter()
 
 
-#should only need to be used by admin to see all users
+#should only need to be used by admin to see all users, gets all users history and external credits in the database
 @router.get("/historys")
 def get_history():
 
-
+#tries to get all courses at once, 10 at a time
     try:
     
         all_history = []
@@ -20,6 +21,7 @@ def get_history():
         size = 10
         start = 0
 
+        #while true get the data of courses and credits
         while True:
 
             response = (
@@ -42,12 +44,14 @@ def get_history():
                 .execute()
             )
 
+            #places data in batches and into list
             batch = response.data
             all_history.extend(batch)
 
             batch2 = response2.data
             all_external.extend(batch2)
 
+            #if the length of a batch is bigger then the other, set that as the max, then break if below size
             if len(batch) < len(batch2):
 
                 max = len(batch2)
@@ -61,6 +65,7 @@ def get_history():
                 break
 
 
+        #valid history  thaat if spacific data is empty then replace with default
         valid_history = []
         for history in all_history:
 
@@ -76,6 +81,7 @@ def get_history():
 
             try:
 
+                #sends data to list
                 valid_history.append(course_history(**history))
 
             except Exception as e:
@@ -83,6 +89,7 @@ def get_history():
                 print(f"Course history entry has invalid data: {e}")
 
 
+        #valid credits that if specific data is empty then replace with default
         valid_external = []
 
         for external in all_external:
@@ -100,6 +107,7 @@ def get_history():
 
             try:
 
+                #sends to list
                 valid_external.append(external_credits(**external))
 
             except Exception as e:
@@ -108,6 +116,7 @@ def get_history():
 
 
 
+        #returns course history nand external credits
         return {"course_history": valid_history,"external_credits": valid_external}
 
     except Exception as e:
@@ -115,10 +124,12 @@ def get_history():
         raise HTTPException(status_code = 500, detail = str(e)) from e
 
 
+#gets the history and external credits of a specifdied user based on student id
 @router.get("/historys/{student_id}")
 def get_history(student_id: int):
 
 
+    #creates the students credits and course history from there student id
     try:
     
         response = (
@@ -137,9 +148,12 @@ def get_history(student_id: int):
             .execute()
         )
 
+        #if no data in either then the history doesnt exist
         if not response.data and not response2.data:
             raise HTTPException(status_code  = 404, detail =f"students with student ID {student_id} does not have cousres history or external credits")
 
+        
+        #valid history  thaat if spacific data is empty then replace with default
         valid_history = []
 
         for history in response.data:
@@ -163,6 +177,7 @@ def get_history(student_id: int):
                 print(f"Course history entry has invalid data: {e}")
 
 
+         #valid credits that if specific data is empty then replace with default
         valid_external = []
 
         for external in response2.data:
@@ -187,6 +202,7 @@ def get_history(student_id: int):
                 print(f"External credit {external.get("external_credit_id")} still has invalid data: {e}")
 
 
+        #returns the student id, there history of credits and classes
         return {"student_id": student_id,"course_history": valid_history,"external_credits": valid_external}
 
     except HTTPException:
