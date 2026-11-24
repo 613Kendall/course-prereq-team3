@@ -64,6 +64,9 @@ def get_history():
 
                 break
 
+            start += size
+
+        
 
         #valid history  thaat if spacific data is empty then replace with default
         valid_history = []
