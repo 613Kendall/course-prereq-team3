@@ -50,6 +50,8 @@ def get_graph_data():
         "prerequisite_groups": get_prereq_groups(),
         "prerequisites": get_prereqs()
     }
+def get_user_data():
+    return get_all_rows("course_history")
 '''
 if __name__ == "__main__":
     print("courses:", len(get_courses()))
