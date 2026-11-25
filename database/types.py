@@ -55,6 +55,7 @@ class student_profile(BaseModel):
     catalog_year: Optional[int] = None
     expected_graduation: Optional[str] = None
     created_at: Optional[str] = None
+    current_gpa: Optinal[float] = 0.0
 
 class course_history(BaseModel):
     history_id: int
