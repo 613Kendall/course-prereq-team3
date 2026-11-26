@@ -19,7 +19,8 @@ def build_graph(data):
             course_id,
             node_type="course",
             label=course["course_title"],
-            course_identifier=course["course_identifier"]
+            course_identifier=course["course_identifier"],
+            is_repeatable=course["is_repeatable"]
         )
     #add group nodes
     for group in data["prerequisite_groups"]:
