@@ -1,5 +1,4 @@
 #imprts and other connections to the database and the prereq graph
-import json
 import pytest
 import networkx as nx
 
@@ -7,7 +6,7 @@ import matplotlib.pyplot as plt
 
 from database.queries import get_graph_data
 
-from graph.prereq_graph import load_data, build_graph, getCoursePrereqs, draw_graph
+from graph.prereq_graph import build_graph, getCoursePrereqs, draw_graph
 
 
 #define database data
@@ -34,47 +33,6 @@ def graph(database_data):
 
     #returns the built graph
     return build_graph(database_data)
-
-
-#tests the loading of data
-def test_load_data(tmp_path, database_data):
-
-    #path of data is a test file to create
-    path = tmp_path / "testdata.json"
-
-    #opens test file and dumps the data
-    with open(path, "w") as file:
-
-        json.dump(database_data, file)
-
-    #loads the file with called load data
-    loaded = load_data(path)
-
-    #checks to see if data matches
-    assert loaded == database_data
-
-#test to see if file is missing correctly
-def test_load_missing_file():
-
-    with pytest.raises(FileNotFoundError):
-
-        load_data("missingfile.json")
-
-
-#test to see if invalid data fails
-def test_load_invalid(tmp_path):
-
-    path = tmp_path / "invalid.json"
-
-    with open(path, "w") as file:
-
-        #writes invalid data in the new file
-        file.write("invalid data")
-
-    #when its invalid try to load into data
-    with pytest.raises(json.JSONDecodeError):
-
-        load_data(path)
 
 
 #test to see if graph is built

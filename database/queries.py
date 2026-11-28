@@ -1,3 +1,4 @@
+from typing import Any, cast
 #query from supabase through init() 
 from database.init_db import init
 
@@ -60,6 +61,28 @@ def get_user_data(student_id):
         .execute()
     )
     return response.data
+def get_course_offerings(course_id, term_id):
+    client = init()
+
+    response = (
+        client.table("offerings")
+        .select("*")
+        .eq("course_id", course_id)
+        .eq("term_id", term_id)
+        .execute()
+    )
+    return cast(list[dict[str,Any]], response.data or[])
+def get_external_credits(student_id):
+    client = init()
+
+    response = (
+        client.table("external_credits")
+        .select("*")
+        .eq("student_id", student_id)
+        .eq("approval_status", "approved")
+        .execute()
+    )
+    return cast(list[dict[str,Any]], response.data or[])
 '''
 if __name__ == "__main__":
     print("courses:", len(get_courses()))

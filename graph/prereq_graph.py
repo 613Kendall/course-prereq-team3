@@ -1,11 +1,6 @@
-import json
 import networkx as nx
 import matplotlib.pyplot as plt
-
 from database.queries import get_graph_data
-def load_data(file_path):
-    with open(file_path,"r") as file:
-        return json.load(file)
 
 def build_graph(data):
     #create empty graph
@@ -83,14 +78,14 @@ def getCoursePrereqs(G, course_id=None, course_identifier=None):
         target_course_id = course_id
     #makes a subgraph with course identifier if input is valid
     elif course_identifier is not None:
-        for node,node.data in G.nodes(data=True):
-            if (node.data.get("node_type") == "course" 
-                and node.data.get("course_identifier") == course_identifier):
+        for node,node_data in G.nodes(data=True):
+            if (node_data.get("node_type") == "course" 
+                and node_data.get("course_identifier") == course_identifier):
                 target_course_id = node
                 break
     #if the input is neither a valid course ID nor a valid course identifier
     if target_course_id is None or target_course_id not in G:
-        raise ValueError(f"Course ID {course_id} not found in the graph.")
+        raise ValueError(f"Course ID {course_id} was not found in the graph.")
     
     #make a subgraph with all ancestor nodes of the target course, 
     #including the target course itself
@@ -122,7 +117,7 @@ def draw_graph(G):
     )
 
     plt.show()
-
+'''
 if __name__ == "__main__":
     data = get_graph_data()
     graph = build_graph(data)
@@ -153,4 +148,4 @@ if __name__ == "__main__":
         draw_graph(course_subgraph)
     except ValueError as error:
         print(error)
-
+'''
