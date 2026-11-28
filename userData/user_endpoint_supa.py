@@ -1,4 +1,5 @@
 #allows for access to other libraries and files
+from uuid import UUID
 from fastapi import HTTPException, APIRouter
 from database.init_db import supabase
 from database.types import User, student_profile
@@ -124,6 +125,14 @@ def get_users():
 @router.get("/users/{user_id}")
 def get_user(user_id: str):
 
+    try:
+
+        UUID(user_id)
+
+    except ValueError:
+
+        raise HTTPException(status_code  = 404, detail =f"user with ID {user_id} does not exist")
+    
     #gets the user information from user table
     try:
 
@@ -191,12 +200,16 @@ def get_user(user_id: str):
 
             print(f"Course {user.get("user_id")} still has invalid data: {e}")
 
-
+    except HTTPException:
+        raise
+  
     except Exception as e:
 
         raise HTTPException(status_code = 500, detail = str(e)) from e
 
+    except Exception as e:
 
+        raise HTTPException(status_code = 500, detail = f"falied to retrive user") from e
 
 
 
