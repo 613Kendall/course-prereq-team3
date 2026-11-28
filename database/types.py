@@ -63,7 +63,7 @@ class course_history(BaseModel):
     term_id: int
     grade: Optional[str] = None
     status: str = "completed"
-    credits_earned: float = 0.0
+    credits_earned: float | None = None
     created_at: Optional[str] = None
 
 class external_credits(BaseModel):
@@ -74,9 +74,9 @@ class external_credits(BaseModel):
     original_course_or_exam: str
     original_grade: Optional[str] = None
     exam_score: Optional[int] = None
-    original_credits: float = 0.0
+    original_credits: float | None = None
     equivalent_course_id: Optional[int] = None
-    credits_awarded: float = 0.0
+    credits_awarded: float  | None = None
     approval_status: str = "pending"
     policy_or_test_note: Optional[str] = None
     reviewed_by: Optional[str] = None
@@ -88,3 +88,7 @@ class Term(BaseModel):
     term_name: str
     start_date: Optional[str] = None
     end_date: Optional[str] = None
+
+class LoginRq(BaseModel):
+    email: str
+    password: str
