@@ -86,7 +86,7 @@ def get_term(term_id: int):
 
         if term.get("term_name") is None:
 
-            user["term_name"] = "N/A"
+            term["term_name"] = "N/A"
 
         try:
 
