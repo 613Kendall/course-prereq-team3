@@ -9,3 +9,5 @@ scipy
 pydantic
 #used to access the database on supabase
 supabase
+#used to load environment variables from .env
+python-dotenv

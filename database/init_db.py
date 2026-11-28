@@ -1,5 +1,7 @@
 # this is the code to actually initialize the database
 # must include valid a .env file. See .env.example for reference
+from fastapi import Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import os
@@ -25,3 +27,13 @@ def init():
 
 load_dotenv()
 supabase: Client = init() # import supabase from this file to use throughout the project
+
+security = HTTPBearer()
+
+def get_auth_client(info: HTTPAuthorizationCredentials = Depends(security)) -> Client:
+
+    client = init()
+
+    client.postgrest.auth(info.credentials)
+
+    return client
