@@ -124,7 +124,8 @@ def get_user(user_id: str):
 
         raise HTTPException(status_code  = 404, detail =f"user with ID {user_id} does not exist")
 
-
+    
+    #gets the user information from user table
     try:
 
         response = (
@@ -189,6 +190,7 @@ def get_user(user_id: str):
     except HTTPException:
         raise
 
+  
     except Exception as e:
 
         raise HTTPException(status_code = 500, detail = str(e)) from e
