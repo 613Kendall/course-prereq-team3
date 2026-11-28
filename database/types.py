@@ -82,3 +82,9 @@ class external_credits(BaseModel):
     reviewed_by: Optional[str] = None
     reviewed_at: Optional[str] = None
     created_at: Optional[str] = None
+
+class Term(BaseModel):
+    term_id: int
+    term_name: str
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
